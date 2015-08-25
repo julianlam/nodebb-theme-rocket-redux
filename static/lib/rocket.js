@@ -1,193 +1,119 @@
 "use strict";
+/*global RELATIVE_PATH, app, utils*/
 
-/*globals ajaxify, config, utils, NProgress*/
-
-$(document).ready(function() {
-	setupSlideMenu();
-	setupEditedByIcon();
-	setupPaginator();
-
-	var env = utils.findBootstrapEnvironment();
-
-	if (env === 'xs' || env ==='sm' && !document.location.pathname.startsWith(RELATIVE_PATH + '/admin')) {
-		$(".navbar-fixed-top").autoHidingNavbar({
-			showOnBottom: false
-		});
+function adjustSubMenu() {
+	if ($(document).scrollTop() > 90) {
+		$('.sub-header').addClass('fixed');
+		$('body').addClass('subHeader-fixed');
+	} else {
+		$('.sub-header').removeClass('fixed');
+		$('body').removeClass('subHeader-fixed');
 	}
+}
 
-	function setupSlideMenu() {
-		$('[data-toggle="slide-in"]').on('click', function(ev) {
-			$('body').toggleClass('slide-in');
+$(document).ready(function () {
+    $(window).on('action:ajaxify.contentLoaded', function(err, data) {
+    	var url = data.url,
+    		menuItem;
 
-			if ($('body').hasClass('slide-in')) {
-				var top = ($('html').scrollTop() || $('body').scrollTop()) + $('header-menu').height(),
-					transform = 'translate3d(0, ' + top + 'px, 0)';
+    	if (url === '') {
+    		menuItem = 'feed';
+    	} else if (url.match(/^recent/)) {
+    		menuItem = 'recent';
+    	} else if (url.match(/^popular/)) {
+    		menuItem = 'popular';
+    	}
 
-				$('#header-menu').css({
-					'-webkit-transform': transform,
-					'-moz-transform': transform,
-					'-ms-transform': transform,
-					'-o-transform': transform,
-					'transform': transform
-				});
+    	$('.main-menu li').removeClass('active');
+    	$('.main-menu .menu-' + menuItem).addClass('active');
 
-				$('html').css('overflow-y', 'hidden');
-			} else {
-				$('body').one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", function() {
-					$('#header-menu').css({
-						'-webkit-transform': 'none',
-						'-moz-transform': 'none',
-						'-ms-transform': 'none',
-						'-o-transform': 'none',
-						'transform': 'none'
-					});
-
-					$('html').css('overflow-y', '');
-				});
-			}
-		});
-
-		$(window).on('action:ajaxify.start', function() {
-			if ($('body').hasClass('slide-in')) {
-				$('.navbar-header button').click();
-			}
-
-			NProgress.set(0.7);
-		});
-
-		$(window).on('action:ajaxify.end', function() {
-			NProgress.done();
-		});
-
-		$(window).on('filter:taskbar.push', function(ev, data) {
-			data.options.className = 'taskbar-' + data.module;
-
-			if (data.module === 'composer') {
-				data.options.icon = 'fa-plus';
-			} else if (data.module === 'chat') {
-				if (!data.element.length) {
-					createChatIcon(data);
-					$(window).one('action:taskbar.pushed', function(ev, data) {
-						updateChatCount(data.element);
-					});
-
-				} else if (!data.element.hasClass('active')) {
-					updateChatCount(data.element);
-				}
-			}
-		});
-
-		function createChatIcon(data) {
-			data.options.icon = 'fa-spinner fa-spin';
-
-			$.getJSON(config.relative_path + '/api/user/' + utils.slugify(data.options.title), function(user) {
-				var el = $('#taskbar [data-uuid="' + data.uuid + '"] a');
-				el.find('i').remove();
-				el.css('background-image', 'url(' + user.picture + ')');
-			});
-		}
-
-		function updateChatCount(el) {
-			var count = (parseInt($(el).attr('data-content'), 10) || 0) + 1;
-			$(el).attr('data-content', count);
-		}
-	}
-
-	function setupEditedByIcon() {
-		function activateEditedTooltips() {
-			$('[data-pid] [component="post/editor"]').each(function() {
-				var el = $(this), icon;
-
-				if (!el.attr('data-editor')) {
-					return;
-				}
-
-				icon = el.parents('[data-pid]').find('.edit-icon');
-				icon.prop('title', el.text()).tooltip('fixTitle').removeClass('hidden');
-			});
-		}
-
-		$(window).on('action:posts.edited', function(ev, data) {
-			var parent = $('[data-pid="' + data.post.pid + '"]'),
-				icon = parent.find('.edit-icon'),
-				el = parent.find('[component="post/editor"]');
-
-			icon.prop('title', el.text()).tooltip('fixTitle').removeClass('hidden');
-		});
-
-		$(window).on('action:topic.loaded', activateEditedTooltips);
-		$(window).on('action:posts.loaded', activateEditedTooltips);
-	}
-
-	function setupPaginator() {
-		function appendPageNumber(ev, data) {
-			var el = data.after ? data.after : data.before;
-			if (!el) {
-				return;
-			}
-			var	page = Math.ceil((el.attr('data-index') - 1) / config.postsPerPage),
-				handle = $('<div class="page-number pointer">' + page + '</div>'),
-				shadow = $('<div class="shadow"></div>');
-
-			el.append(handle);
-			el.append(shadow);
-
-			handle.tooltip({
-				title: 'Slide to paginate',
-				placement: 'auto left'
-			});
-
-			var dragging = false, originalX = 0, toPage = page;
-			handle.on('touchstart', function(ev) {
-				dragging = true;
-				originalX = ev.originalEvent.touches[0].clientX;
-			});
-
-			$('#content').on('touchend', function() {
-				if (dragging === true) {
-					dragging = false;
-					if (page !== toPage) {
-						ajaxify.go('topic/' + ajaxify.data.slug + '/' + (toPage * config.postsPerPage));
-					}
-
-					shadow.removeClass('active');
-				}
-			});
-
-			$('#content').on('touchmove', function(ev) {
-				if (!dragging) {
-					return;
-				}
-
-				var distance = ev.originalEvent.touches[0].clientX - originalX,
-					handlePos = parseInt(handle.css('left'), 10),
-					postWidth = handle.parents('[component="post"]').width();
-
-				toPage = Math.ceil((handlePos + distance) / postWidth * ajaxify.data.pageCount);
-
-				if (toPage >= ajaxify.data.pageCount) {
-					toPage = (ajaxify.data.pageCount - 1);
-				}
-
-				if (toPage < 0) {
-					toPage = 0;
-				}
-
-				if (parseInt(handle.html(), 10) !== toPage) {
-					handle.html(toPage);
-					handle.removeClass('animated');
-					setTimeout(function() { handle.addClass('animated');}, 10);
-				}
-
-				shadow.addClass('active');
-				shadow.css('left', toPage / ajaxify.data.pageCount * postWidth + 'px');
-			});
-
-			handle.css('left', page / ajaxify.data.pageCount * handle.parents('[component="post"]').width() + 'px');
-		}
-
-		$(window).on('action:posts.loading', appendPageNumber);
-	}
+    	$(document).on('scroll', adjustSubMenu);
+    	adjustSubMenu();
 
 
+        buildBreadcrumbs(data.url);
+        addPageButtons(data.url);
+    });
+
+    $(window).on('action:ajaxify.end', function(e, opts) {
+        if (opts.url.match(/^user\/[^\/]+$/)) {
+            require(['forum/theme/profile'], function(profile) {
+                profile.addListeners();
+                profile.cover.load();
+            });
+        }
+    });
 });
+
+
+function addPageButtons(url) {
+    $('#page-buttons').html('');
+
+    if (url.match(/^topic/)) {    
+        $('.thread-sort').appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
+        $('.thread-tools').appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
+    }
+}
+
+function enableNewPostButton(url) {
+    var $actionButton = $('#action-button'),
+        $categoryMenu = $('#category-menu');
+
+    // Reset this button's events
+    $('#action-button').removeAttr('data-toggle').off('click');
+
+    if (url === '') {
+        $actionButton.attr('data-toggle', 'dropdown');
+        var menuItem = '<li role="presentation"><a role="menuitem" tabindex="-1" href="{slug}">{title} <!-- IF unread --><span class="label label-danger">New</span><!-- ENDIF unread --><br /><small>{description}</small></a></li>';
+
+        $categoryMenu.html('');
+        var html = '';
+        
+        $('.card-content h2 a').each(function() {
+            var $this = $(this);
+
+            html += templates.parse(menuItem, {
+                slug: $this.attr('href'),
+                title: $this.text(),
+                description: $this.children('input[name="description"]').val(),
+                unread: !!$this.children('input[name="unread"]').val()
+            });
+        });
+
+        $categoryMenu.html(html);
+    } else if (url.match(/^topic/)) {
+        $('#action-button').on('click', function() {
+            $(window).trigger('action:composer.post.new', {
+                tid: ajaxify.data.tid,
+                // pid: undefined,
+                topicName: ajaxify.data.title
+            });
+        });
+    } else {
+        $('#action-button').on('click', function() {
+            $(window).trigger('action:composer.topic.new', {
+                cid: ajaxify.data.cid
+            });
+        });
+    }
+}
+
+function buildBreadcrumbs(url) {
+    if (url === '') {
+        ajaxify.data.actionText = '[[rocket:select-category]]';
+    } else if (url.match(/^topic/)) {
+        ajaxify.data.actionText = 'New Reply';
+    } else {
+        ajaxify.data.actionText = 'New Topic';
+    }
+
+    templates.parse('rocket/breadcrumbs', ajaxify.data, function(breadcrumbHTML) {
+        translator.translate(breadcrumbHTML, function(breadcrumbHTML) {
+            $('.btn-breadcrumb').replaceWith(breadcrumbHTML);
+            enableNewPostButton(url);
+        });
+    });
+
+    // Remove any breadcrumb added in Persona
+    $('ol.breadcrumb').remove();
+}

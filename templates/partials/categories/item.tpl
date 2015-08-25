@@ -21,11 +21,11 @@
 
 	<div class="card-footer">
 		<div class="pull-left">
-			<span class="icon-heart"></span><span class="card-stat">23</span>
-			<span class="icon-comment"></span><span class="card-stat">2</span>
+			<!-- <span class="icon-heart"></span><span class="card-stat">23</span> -->
+			<span class="icon-comment"></span><span class="card-stat">{categories.totalTopicCount}</span>
 		</div>
-		<div class="pull-right">
+		<!-- <div class="pull-right">
 			<span class="icon-star"></span>
-		</div>
+		</div> -->
 	</div>
 </div>

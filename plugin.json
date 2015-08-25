@@ -5,11 +5,13 @@
 		{ "hook": "filter:categories.build", "method": "updateCategories" }
 	],
 	"scripts": [
+		"static/lib/persona.js",
 		"static/lib/rocket.js",
 		"static/lib/modules/nprogress.js",
 		"static/lib/modules/autohidingnavbar.min.js"
 	],
 	"staticDirs": {
 		"images": "static/images"
-	}
+	},
+	"languages": "static/languages"
 }
