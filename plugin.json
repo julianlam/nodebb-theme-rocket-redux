@@ -2,7 +2,7 @@
 	"id": "nodebb-theme-rocket-redux",
 	"library": "lib/rocket.js",
 	"hooks": [
-		{ "hook": "static:app.preload", "method": "preinit" }
+		{ "hook": "filter:categories.build", "method": "updateCategories" }
 	],
 	"scripts": [
 		"static/lib/rocket.js",
