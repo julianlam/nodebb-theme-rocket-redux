@@ -13,22 +13,24 @@ function adjustSubMenu() {
 
 $(document).ready(function () {
     $(window).on('action:ajaxify.contentLoaded', function(err, data) {
-    	var url = data.url,
-    		menuItem;
+        var url = data.url,
+        menuItem;
 
-    	if (url === '') {
-    		menuItem = 'feed';
-    	} else if (url.match(/^recent/)) {
-    		menuItem = 'recent';
-    	} else if (url.match(/^popular/)) {
-    		menuItem = 'popular';
-    	}
+        if (url.match(/^recent/)) {
+            menuItem = 'recent';
+        } else if (url.match(/^popular/)) {
+            menuItem = 'popular';
+        } else if (url.match(/^register/)) {
+            menuItem = 'register';
+        } else if (url.match(/^login/)) {
+            menuItem = 'login';
+        }
 
-    	$('.main-menu li').removeClass('active');
-    	$('.main-menu .menu-' + menuItem).addClass('active');
+        $('.main-menu li').removeClass('active');
+        $('.main-menu .menu-' + menuItem).addClass('active');
 
-    	$(document).on('scroll', adjustSubMenu);
-    	adjustSubMenu();
+        $(document).on('scroll', adjustSubMenu);
+        adjustSubMenu();
 
 
         buildBreadcrumbs(data.url);
@@ -83,17 +85,25 @@ function enableNewPostButton(url) {
         $categoryMenu.html(html);
     } else if (url.match(/^topic/)) {
         $('#action-button').on('click', function() {
-            $(window).trigger('action:composer.post.new', {
-                tid: ajaxify.data.tid,
-                // pid: undefined,
-                topicName: ajaxify.data.title
-            });
+            if (app.user.uid) {
+                $(window).trigger('action:composer.post.new', {
+                    tid: ajaxify.data.tid,
+                    // pid: undefined,
+                    topicName: ajaxify.data.title
+                });
+            } else {
+                ajaxify.go('login');
+            }
         });
     } else {
         $('#action-button').on('click', function() {
-            $(window).trigger('action:composer.topic.new', {
-                cid: ajaxify.data.cid
-            });
+            if (app.user.uid) {
+                $(window).trigger('action:composer.topic.new', {
+                    cid: ajaxify.data.cid
+                });
+            } else {
+                ajaxify.go('login');
+            }
         });
     }
 }

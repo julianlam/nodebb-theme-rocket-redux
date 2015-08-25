@@ -19,6 +19,7 @@
 
 		
 		<div class="pull-right">
+			<!-- IF loggedIn -->
 			<div id="user_label" class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_dropdown">
 					<img class="img-circle avatar" id="user-header-picture" src="{user.picture}"/>
@@ -45,6 +46,14 @@
 					</li>
 				</ul>
 			</div>
+			<!-- ELSE -->
+			<ul class="main-menu">
+				<!-- IF allowRegistration -->
+				<li class="menu-register"><h3><a href="{relative_path}/register">[[global:register]]</a></h3></li>
+				<!-- ENDIF allowRegistration -->
+				<li class="menu-login"><h3><a href="{relative_path}/login">[[global:login]]</a></h3></li>
+			</ul>
+			<!-- ENDIF loggedIn -->
 		</div>
 	</div>
 </div>
