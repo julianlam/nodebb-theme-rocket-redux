@@ -1,0 +1,15 @@
+{
+	"id": "nodebb-theme-rocket-redux",
+	"library": "lib/rocket.js",
+	"hooks": [
+		{ "hook": "static:app.preload", "method": "preinit" }
+	],
+	"scripts": [
+		"static/lib/rocket.js",
+		"static/lib/modules/nprogress.js",
+		"static/lib/modules/autohidingnavbar.min.js"
+	],
+	"staticDirs": {
+		"images": "static/images"
+	}
+}
