@@ -24,8 +24,8 @@
 			<!-- <span class="icon-heart"></span><span class="card-stat">23</span> -->
 			<span class="icon-comment"></span><span class="card-stat">{categories.totalTopicCount}</span>
 		</div>
-		<!-- <div class="pull-right">
-			<span class="icon-star"></span>
-		</div> -->
+		<div class="pull-right">
+			<span class="icon-star<!-- IF !categories.isIgnored --> on<!-- ENDIF !categories.isIgnored -->"></span>
+		</div>
 	</div>
 </div>
