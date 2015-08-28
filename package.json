@@ -24,6 +24,6 @@
     "url": "https://github.com/julianlam/nodebb-theme-rocket-redux/issues"
   },
   "nbbpm": {
-    "compatibility": "^0.7.0"
+    "compatibility": "^0.7.0 || ^0.8.0"
   }
 }
