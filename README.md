@@ -7,7 +7,10 @@ a base.
 
 ## Screenshots
 
-*TBD*
+![Main Index](./screenshots/1.png)
+
+![New Topic Creation Dropdown](./screenshots/2.png)
+
 ## Installation
 
 Install via the "ACP/Plugins" page, or by executing `npm install nodebb-theme-rocket-redux`
