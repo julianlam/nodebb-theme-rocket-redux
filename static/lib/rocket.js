@@ -52,8 +52,8 @@ function addPageButtons(url) {
     $('#page-buttons').html('');
 
     if (url.match(/^topic/)) {    
-        $('.thread-sort').appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
-        $('.thread-tools').appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
+        $('.thread-sort').first().appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
+        $('.thread-tools').first().appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
     }
 }
 

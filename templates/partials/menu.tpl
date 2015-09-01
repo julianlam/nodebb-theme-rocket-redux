@@ -4,11 +4,11 @@
 			<a href="{relative_path}/">
 				<img class="{brand:logo:display} forum-logo" src="{brand:logo}" />
 			</a>
-			<!-- IF showSiteTitle -->
+			<!-- IF config.showSiteTitle -->
 			<a href="{relative_path}/">
 				<h1 class="navbar-brand forum-title">{title}</h1>
 			</a>
-			<!-- ENDIF showSiteTitle -->
+			<!-- ENDIF config.showSiteTitle -->
 		</div>
 		<div class="pull-left">
 			<ul class="main-menu">
@@ -19,7 +19,7 @@
 
 		
 		<div class="pull-right">
-			<!-- IF loggedIn -->
+			<!-- IF config.loggedIn -->
 			<div id="user_label" class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_dropdown">
 					<img class="img-circle avatar" id="user-header-picture" src="{user.picture}"/>
@@ -53,7 +53,7 @@
 				<!-- ENDIF allowRegistration -->
 				<li class="menu-login"><h3><a href="{relative_path}/login">[[global:login]]</a></h3></li>
 			</ul>
-			<!-- ENDIF loggedIn -->
+			<!-- ENDIF config.loggedIn -->
 		</div>
 	</div>
 </div>
