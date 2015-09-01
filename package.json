@@ -1,6 +1,6 @@
 {
   "name": "nodebb-theme-rocket-redux",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A theme with a card-based design for NodeBB forums. Mobile enabled.",
   "main": "theme.less",
   "repository": {
