@@ -51,7 +51,7 @@ $(document).ready(function () {
 function addPageButtons(url) {
     $('#page-buttons').html('');
 
-    if (url.match(/^topic/)) {    
+    if (url.match(/^topic/)) {
         $('.thread-sort').first().appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
         $('.thread-tools').first().appendTo($('#page-buttons')).removeClass('dropup').find('.pull-right').removeClass('pull-right');
     }
@@ -70,7 +70,7 @@ function enableNewPostButton(url) {
 
         $categoryMenu.html('');
         var html = '';
-        
+
         $('.card-content h2 a').each(function() {
             var $this = $(this);
 
@@ -112,9 +112,9 @@ function buildBreadcrumbs(url) {
     if (url === '') {
         ajaxify.data.actionText = '[[rocket:select-category]]';
     } else if (url.match(/^topic/)) {
-        ajaxify.data.actionText = 'New Reply';
+        ajaxify.data.actionText = '[[rocket:new-reply]]';
     } else {
-        ajaxify.data.actionText = 'New Topic';
+        ajaxify.data.actionText = '[[rocket:new-topic]]';
     }
 
     templates.parse('rocket/breadcrumbs', ajaxify.data, function(breadcrumbHTML) {

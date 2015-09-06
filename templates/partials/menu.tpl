@@ -12,12 +12,12 @@
 		</div>
 		<div class="pull-left">
 			<ul class="main-menu">
-				<li class="menu-recent"><h3><a href="{relative_path}/recent">Recent</a></h3></li>
-				<li class="menu-popular"><h3><a href="{relative_path}/popular">Popular</a></h3></li>
+				<li class="menu-recent"><h3><a href="{relative_path}/recent">[[rocket:recent]]</a></h3></li>
+				<li class="menu-popular"><h3><a href="{relative_path}/popular">[[rocket:popular]]</a></h3></li>
 			</ul>
 		</div>
 
-		
+
 		<div class="pull-right">
 			<!-- IF config.loggedIn -->
 			<div id="user_label" class="dropdown">
