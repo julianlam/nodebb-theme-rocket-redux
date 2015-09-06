@@ -1,3 +1,10 @@
 {
+<<<<<<< HEAD
+=======
+	"recent": "Récent",
+	"popular": "Populaire",
+	"new-reply": "Nouvelle réponse",
+	"new-topic": "Nouveau sujet",
+>>>>>>> a6f121fc1d7481d5cc23476ccb419feabff2636e
 	"select-category": "Sélectionner une catégorie"
 }
