@@ -112,9 +112,9 @@ function buildBreadcrumbs(url) {
     if (url === '') {
         ajaxify.data.actionText = '[[rocket:select-category]]';
     } else if (url.match(/^topic/)) {
-        ajaxify.data.actionText = '[[rocket:new-reply]]';
+        ajaxify.data.actionText = '[[topic:reply]]';
     } else {
-        ajaxify.data.actionText = '[[rocket:new-topic]]';
+        ajaxify.data.actionText = '[[topic:composer.new_topic]]';
     }
 
     templates.parse('rocket/breadcrumbs', ajaxify.data, function(breadcrumbHTML) {

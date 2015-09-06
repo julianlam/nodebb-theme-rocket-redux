@@ -12,8 +12,8 @@
 		</div>
 		<div class="pull-left">
 			<ul class="main-menu">
-				<li class="menu-recent"><h3><a href="{relative_path}/recent">[[rocket:recent]]</a></h3></li>
-				<li class="menu-popular"><h3><a href="{relative_path}/popular">[[rocket:popular]]</a></h3></li>
+				<li class="menu-recent"><h3><a href="{relative_path}/recent">[[global:header.recent]]</a></h3></li>
+				<li class="menu-popular"><h3><a href="{relative_path}/popular">[[global:header.popular]]</a></h3></li>
 			</ul>
 		</div>
 
